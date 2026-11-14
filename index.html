@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trgovina Sneška 1</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
+body{background:#eef2f5;color:#2c3e50}
+header{background:#d9232e;color:#fff;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;position:relative}
+header h1{font-size:1.3rem}
+.dots{background:rgba(255,255,255,.2);border:none;color:#fff;width:40px;height:40px;border-radius:50%;font-size:1.5rem;cursor:pointer}
+.menu{display:none;position:absolute;top:60px;right:15px;background:#fff;border-radius:8px;box-shadow:0 5px 15px rgba(0,0,0,.2);min-width:190px;z-index:99}
+.menu.open{display:block}
+.menu button{display:block;width:100%;padding:14px;border:none;border-bottom:1px solid #eee;background:#fff;text-align:left;font-weight:bold;color:#2c3e50;cursor:pointer}
+.box{max-width:500px;margin:20px auto;padding:0 15px}
+.banner{background:#1a252f;color:#fff;padding:18px;border-radius:10px;text-align:center;margin-bottom:15px;border-bottom:4px solid #f1c40f}
+.banner h2{color:#f1c40f;font-size:1.2rem;margin-bottom:6px}
+.banner small{display:block;color:#bdc3c7;font-size:.75rem;margin-top:8px}
+.card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.card h3{color:#d9232e;text-align:center;margin-bottom:15px}
+input{width:100%;padding:12px;margin:6px 0 14px;border:1px solid #ccc;border-radius:8px;font-size:1rem}
+.btn{width:100%;padding:14px;background:#d9232e;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:5px}
+.btn-green{background:#27ae60}
+.btn-gray{background:#6c757d;font-size:.85rem;padding:10px}
+.lcard{background:linear-gradient(135deg,#d9232e,#7a0d13);color:#fff;padding:20px;border-radius:14px;margin:15px 0;text-align:center;border:2px solid #f1c40f}
+.code{font-family:monospace;font-size:2.6rem;font-weight:bold;color:#f1c40f;background:rgba(0,0,0,.25);padding:10px;border-radius:10px;margin:15px 0;letter-spacing:8px}
+.row{padding:12px 0;border-bottom:1px solid #eee}
+.row span{display:block;font-size:.75rem;color:#7f8c8d;text-transform:uppercase}
+footer{text-align:center;padding:15px;font-size:.8rem;color:#666}
+</style>
+</head>
+<body>
+
+<header>
+  <div><h1>TRGOVINA SNEŠKA 1</h1><small>Program lojalnosti</small></div>
+  <button class="dots" onclick="toggleMenu(event)">&#8942;</button>
+  <div class="menu" id="menu">
+    <button onclick="go('kartica')">💳 Moja kartica</button>
+    <button onclick="go('firma')">🏪 Trgovina Sneška</button>
+    <button onclick="go('nalog')">👤 Moj nalog</button>
+  </div>
+</header>
+
+<div class="box">
+  <div class="banner" id="banner">
+    <h2>SKUPLJAJTE POPUSTE SA NAMA!</h2>
+    <p>Na svaki potrošeni iznos obračunava se 5% popusta.</p>
+    <small>* Popust se ne primenjuje na cigarete, novine, beli hleb i ostale snižene proizvode.</small>
+  </div>
+
+  <div class="card" id="p-reg">
+    <h3>Kreirajte karticu</h3>
+    <label>Ime i prezime *</label>
+    <input type="text" id="ime" placeholder="Unesite ime i prezime">
+    <label>Mejl adresa *</label>
+    <input type="email" id="mejl" placeholder="vas@mejl.com">
+    <button class="btn" onclick="kreiraj()">Kreiraj moju karticu</button>
+  </div>
+
+  <div class="card" id="p-card" style="display:none">
+    <h3>Digitalna kartica</h3>
+    <div class="lcard">
+      <div style="display:flex;justify-content:space-between;font-weight:bold"><span>TRGOVINA SNEŠKA 1</span><span style="color:#f1c40f">5% POPUSTA</span></div>
+      <div class="code" id="c-broj">0000</div>
+      <div style="text-align:left"><strong id="c-ime"></strong><br><small id="c-mejl"></small></div>
+    </div>
+    <button class="btn btn-green" onclick="preuzmi()">⬇ Preuzmi karticu (Download)</button>
+    <button class="btn btn-gray" onclick="odjava()">Promeni mejl adresu</button>
+  </div>
+
+  <div class="card" id="p-firma" style="display:none">
+    <h3>Trgovina Sneška</h3>
+    <div class="row"><span>Naziv firme</span><strong>Trgovina Sneška 1</strong></div>
+    <div class="row"><span>PIB</span><strong>107124984</strong></div>
+    <div class="row"><span>Adresa</span><strong>Cara Lazara bb</strong></div>
+    <div class="row"><span>Telefon</span><strong><a href="tel:0641329600" style="color:#27ae60">064 132 9600</a></strong></div>
+    <button class="btn" onclick="go('kartica')">Nazad</button>
+  </div>
+
+  <div class="card" id="p-nalog" style="display:none">
+    <h3>Moj nalog</h3>
+    <div id="n-da">
+      <div class="row"><span>Ime i prezime</span><strong id="n-ime"></strong></div>
+      <div class="row"><span>Mejl adresa</span><strong id="n-mejl"></strong></div>
+      <div class="row"><span>Broj kartice</span><strong id="n-broj" style="color:#d9232e"></strong></div>
+      <button class="btn btn-gray" onclick="odjava()">Odjavi se</button>
+    </div>
+    <div id="n-ne" style="display:none;text-align:center">
+      <p style="margin-bottom:10px">Niste prijavljeni.</p>
+      <button class="btn" onclick="go('kartica')">Prijavi se</button>
+    </div>
+  </div>
+</div>
+
+<footer>Trgovina Sneška 1 | PIB: 107124984 | Cara Lazara bb</footer>
+
+<script>
+var u=null;
+function toggleMenu(e){e.stopPropagation();document.getElementById('menu').classList.toggle('open')}
+window.onclick=function(){document.getElementById('menu').classList.remove('open')};
+function go(s){
+  ['p-reg','p-card','p-firma','p-nalog'].forEach(function(id){document.getElementById(id).style.display='none'});
+  document.getElementById('banner').style.display=(s==='kartica')?'block':'none';
+  if(s==='kartica') u?prikazi(u):document.getElementById('p-reg').style.display='block';
+  if(s==='firma') document.getElementById('p-firma').style.display='block';
+  if(s==='nalog'){
+    document.getElementById('p-nalog').style.display='block';
+    document.getElementById('n-da').style.display=u?'block':'none';
+    document.getElementById('n-ne').style.display=u?'none':'block';
+    if(u){document.getElementById('n-ime').textContent=u.ime;document.getElementById('n-mejl').textContent=u.mejl;document.getElementById('n-broj').textContent=u.broj;}
+  }
+}
+function kreiraj(){
+  var ime=document.getElementById('ime').value.trim();
+  var mejl=document.getElementById('mejl').value.trim().toLowerCase();
+  if(!ime||mejl.indexOf('@')===-1){alert('Unesite ime, prezime i ispravan mejl.');return;}
+  var db=JSON.parse(localStorage.getItem('sn_db')||'{}');
+  if(!db[mejl]){db[mejl]={ime:ime,mejl:mejl,broj:Math.floor(1000+Math.random()*9000).toString()};localStorage.setItem('sn_db',JSON.stringify(db));}
+  localStorage.setItem('sn_act',mejl);
+  prikazi(db[mejl]);
+}
+function prikazi(k){
+  u=k;
+  ['p-reg','p-firma','p-nalog'].forEach(function(id){document.getElementById(id).style.display='none'});
+  document.getElementById('banner').style.display='block';
+  document.getElementById('p-card').style.display='block';
+  document.getElementById('c-ime').textContent=k.ime.toUpperCase();
+  document.getElementById('c-mejl').textContent=k.mejl;
+  document.getElementById('c-broj').textContent=k.broj;
+}
+function odjava(){u=null;localStorage.removeItem('sn_act');document.getElementById('ime').value='';document.getElementById('mejl').value='';go('kartica');}
+function preuzmi(){
+  if(!u)return;
+  var c=document.createElement('canvas');c.width=600;c.height=360;var x=c.getContext('2d');
+  x.fillStyle='#d9232e';x.fillRect(0,0,600,360);x.strokeStyle='#f1c40f';x.lineWidth=6;x.strokeRect(10,10,580,340);
+  x.fillStyle='#fff';x.font='bold 24px sans-serif';x.fillText('TRGOVINA SNEŠKA 1 - 5% POPUSTA',30,55);
+  x.fillStyle='#f1c40f';x.font='bold 75px monospace';x.textAlign='center';x.fillText(u.broj,300,200);
+  x.fillStyle='#fff';x.font='bold 20px sans-serif';x.textAlign='left';x.fillText(u.ime.toUpperCase(),30,295);
+  x.font='16px sans-serif';x.fillText(u.mejl,30,325);
+  var a=document.createElement('a');a.download='Kartica-'+u.broj+'.png';a.href=c.toDataURL();a.click();
+}
+window.onload=function(){var a=localStorage.getItem('sn_act'),db=JSON.parse(localStorage.getItem('sn_db')||'{}');if(a&&db[a])prikazi(db[a]);};
+</script>
+</body>
+</html>

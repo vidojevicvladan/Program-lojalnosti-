@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trgovina Sneška - Kartica Lojalnosti</title>
-    <!-- Biblioteka za generisanje barkoda za kasu -->
-    <script src="https://jsdelivr.net"></script>
+    <title>Trgovina Sneška 1 - Digitalna Kartica Lojalnosti</title>
+    <!-- Biblioteka za pretvaranje kartice u sliku (Download) -->
+    <script src="https://cloudflare.com"></script>
     <style>
         :root {
             --primary: #d9232e;
@@ -13,6 +13,8 @@
             --secondary: #f8f9fa;
             --text: #2c3e50;
             --gold: #f1c40f;
+            --success: #27ae60;
+            --success-dark: #219150;
         }
 
         * {
@@ -39,7 +41,7 @@
         }
 
         header h1 {
-            font-size: 2rem;
+            font-size: 1.9rem;
             letter-spacing: 1px;
         }
 
@@ -50,8 +52,8 @@
         }
 
         .container {
-            max-width: 600px;
-            margin: 30px auto;
+            max-width: 550px;
+            margin: 25px auto;
             padding: 0 15px;
             flex: 1;
             width: 100%;
@@ -61,25 +63,25 @@
         .promo-banner {
             background: linear-gradient(135deg, #2c3e50, #1a252f);
             color: white;
-            padding: 25px;
+            padding: 22px;
             border-radius: 12px;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             border-bottom: 4px solid var(--gold);
         }
 
         .promo-banner h2 {
             color: var(--gold);
-            font-size: 1.6rem;
-            margin-bottom: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
             text-transform: uppercase;
         }
 
         .promo-banner .main-offer {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .promo-banner .disclaimer {
@@ -90,18 +92,19 @@
             padding-top: 10px;
         }
 
-        /* Forma za registraciju */
+        /* Kartica kutija */
         .card-box {
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .card-box h3 {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             text-align: center;
             color: var(--primary);
+            font-size: 1.3rem;
         }
 
         .form-group {
@@ -112,7 +115,7 @@
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .form-group input {
@@ -136,92 +139,28 @@
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: bold;
             cursor: pointer;
             transition: background 0.3s;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         button:hover {
             background-color: var(--primary-dark);
         }
 
-        /* Izgled generisane kartice */
-        #loyalty-card-section {
-            display: none;
-            text-align: center;
-        }
-
-        .virtual-card {
-            background: linear-gradient(135deg, var(--primary) 0%, #8e1118 100%);
-            color: white;
-            border-radius: 16px;
-            padding: 25px;
-            margin: 20px 0;
-            box-shadow: 0 10px 25px rgba(217, 35, 46, 0.3);
-            position: relative;
-            text-align: left;
-        }
-
-        .virtual-card .card-header {
+        .btn-download {
+            background-color: var(--success);
+            margin-bottom: 10px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .virtual-card .store-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
-        .virtual-card .badge {
-            background: var(--gold);
-            color: #1a252f;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .virtual-card .user-name {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-
-        .virtual-card .card-number {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1.3rem;
-            letter-spacing: 3px;
-            color: var(--gold);
-            margin-bottom: 15px;
-        }
-
-        .barcode-container {
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .barcode-container svg {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .instructions {
-            background: #e8f4fd;
-            color: #0c5460;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            line-height: 1.5;
+        .btn-download:hover {
+            background-color: var(--success-dark);
         }
 
         .btn-secondary {
@@ -234,9 +173,126 @@
             background-color: #5a6268;
         }
 
+        /* Digitalna kartica dizajn */
+        #loyalty-card-section {
+            display: none;
+            text-align: center;
+        }
+
+        .digital-card-wrapper {
+            padding: 10px;
+            background: white;
+            border-radius: 18px;
+            margin: 15px 0;
+        }
+
+        .virtual-card {
+            background: linear-gradient(135deg, var(--primary) 0%, #7a0d13 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 25px 20px;
+            box-shadow: 0 10px 25px rgba(217, 35, 46, 0.35);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 230px;
+            border: 2px solid rgba(241, 196, 15, 0.4);
+        }
+
+        .virtual-card .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .virtual-card .store-name {
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .virtual-card .badge {
+            background: var(--gold);
+            color: #1a252f;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+
+        /* Četvorocifreni broj po sredini */
+        .virtual-card .card-center {
+            margin: 22px 0;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px dashed rgba(241, 196, 15, 0.6);
+        }
+
+        .virtual-card .number-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #f8f9fa;
+            opacity: 0.85;
+            margin-bottom: 4px;
+        }
+
+        .virtual-card .four-digit-code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 10px;
+            color: var(--gold);
+            padding-left: 10px; /* Centriranje zbog letter-spacing */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .virtual-card .card-bottom {
+            text-align: left;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 10px;
+        }
+
+        .virtual-card .user-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .virtual-card .user-email {
+            font-size: 0.8rem;
+            opacity: 0.85;
+            margin-top: 2px;
+        }
+
+        .alert-msg {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            display: none;
+            border: 1px solid #ffeeba;
+        }
+
+        .instructions {
+            background: #e8f4fd;
+            color: #0c5460;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 18px;
             background: #2c3e50;
             color: #ecf0f1;
             font-size: 0.85rem;
@@ -247,7 +303,7 @@
 <body>
 
     <header>
-        <h1>TRGOVINA SNEŠKA</h1>
+        <h1>TRGOVINA SNEŠKA 1</h1>
         <p>Program lojalnosti za naše verne kupce</p>
     </header>
 
@@ -261,9 +317,9 @@
             </p>
         </div>
 
-        <!-- Forma za unos podataka -->
+        <!-- Forma za registraciju / pristup kartici -->
         <div class="card-box" id="registration-section">
-            <h3>Registrujte se i preuzmite karticu</h3>
+            <h3>Kreirajte ili otvorite karticu</h3>
             <form id="loyalty-form">
                 <div class="form-group">
                     <label for="fullName">Ime i prezime *</label>
@@ -271,66 +327,24 @@
                 </div>
                 <div class="form-group">
                     <label for="email">Mejl adresa *</label>
-                    <input type="email" id="email" placeholder="primer@mejl.com" required>
+                    <input type="email" id="email" placeholder="vas.mejl@primer.com" required>
                 </div>
                 <button type="submit">Kreiraj moju karticu</button>
             </form>
         </div>
 
-        <!-- Prikaz kreirane kartice -->
+        <!-- Prikaz kreirane digitalne kartice -->
         <div class="card-box" id="loyalty-card-section">
-            <h3>Vaša kartica lojalnosti je spremna!</h3>
-            <div class="instructions">
-                Sačuvajte ovu stranicu ili napravite snimak ekrana (screenshot). Pri svakoj kupovini pokažite broj kartice ili barkod na kasi kako biste ostvarili <strong>5% popusta</strong>.
-            </div>
-
-            <div class="virtual-card">
-                <div class="card-header">
-                    <span class="store-name">TRGOVINA SNEŠKA</span>
-                    <span class="badge">5% POPUSTA</span>
-                </div>
-                <div class="user-name" id="display-name">IME PREZIME</div>
-                <div class="card-number" id="display-number">0000 0000 0000</div>
-                
-                <div class="barcode-container">
-                    <svg id="barcode"></svg>
-                </div>
-            </div>
-
-            <button class="btn-secondary" onclick="resetCard()">Registruj novog korisnika</button>
-        </div>
-    </div>
-
-    <footer>
-        <p><strong>Trgovina Sneška</strong> | PIB: 107124984</p>
-        <p style="margin-top: 5px; font-size: 0.75rem; opacity: 0.7;">Sva prava zadržana.</p>
-    </footer>
-
-    <script>
-        // Provera da li korisnik već ima sačuvanu karticu u pregledaču
-        window.onload = function() {
-            const savedUser = localStorage.getItem('sneska_loyalty_user');
-            if (savedUser) {
-                const userData = JSON.parse(savedUser);
-                showCard(userData.name, userData.cardNumber);
-            }
-        };
-
-        // Generisanje jedinstvenog 12-cifrenog broja kartice (počinje sa 2026)
-        function generateCardNumber() {
-            const prefix = "2026";
-            const randomPart = Math.floor(10000000 + Math.random() * 90000000).toString();
-            return prefix + randomPart;
-        }
-
-        // Formatiranje broja za lepši prikaz (npr. 2026 1234 5678)
-        function formatCardNumber(num) {
-            return num.replace(/(\d{4})(?=\d)/g, '$1 ');
-        }
-
-        // Obrada forme
-        document.getElementById('loyalty-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+            <h3>Vaša Digitalna Kartica</h3>
             
-            const name = document.getElementById('fullName').value.trim();
-            const email = document.getElementById('email').value.trim();
+            <div class="alert-msg" id="existing-alert">
+                Ova mejl adresa već ima registrovanu karticu. Prikazana je vaša postojeća kartica.
+            </div>
+
+            <div class="instructions">
+                Preuzmite karticu u telefon klikom na dugme ispod i pokažite vaš <strong>četvorocifreni broj</strong> na kasi za 5% popusta.
+            </div>
+
+            <!-- Deo koji se pretvara u sliku za preuzimanje -->
+            <div class="digital-card-wrapper" id="capture-area">
+                <div class="virtual-card">
